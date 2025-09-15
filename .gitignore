@@ -1,0 +1,3 @@
+server/*
+!server/eula.txt
+!server/server.properties

@@ -1,0 +1,46 @@
+services:
+  ddclient:
+    image: lscr.io/linuxserver/ddclient:latest
+    container_name: mcddclient
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ddclient:/config
+    restart: unless-stopped
+
+  nginx-proxy:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: mcnginx-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - nginx-data:/data
+      - nginx-letsencrypt:/etc/letsencrypt
+    networks:
+      - craftnet
+
+  minecraft:
+    build: .
+    container_name: minecraft
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    ports:
+      - "25565:25565"
+    volumes:
+      - ./server:/minecraft
+    networks:
+      - craftnet
+
+volumes:
+  ddclient:
+  nginx-data:
+  nginx-letsencrypt:
+
+networks:
+  craftnet:
+    driver: bridge
