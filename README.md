@@ -7,7 +7,7 @@ Decide whether you’ll be running local only (LAN play) or public with a domain
 You’ll need a domain name if you want friends to connect without using your IP directly. Services like Porkbun sell domains for as little as $1-10/year. (Personally my domain costs about $5/year)
 ## Part 1: Base Server Setup
 1. Get the files
-     - Clone this repository, or download it as a .zip and extract it to a folder of your choice.
+     - Download the preferred version from [Releases](https://github.com/Someone8465/Minecraft-Docker/releases)
 2. Accept the EULA
      - Go to ./minecraft-docker/server/
      - Open eula.txt
