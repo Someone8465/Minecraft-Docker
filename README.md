@@ -1,55 +1,85 @@
-# Minecraft Server Setup (Docker + Domain)
+</head>
+<body>
+  <header>
+    <h1>Minecraft Server Setup</h1>
+    <p>Docker + Domain Configuration Guide</p>
+  </header>
 
-This guide currently covers setting up a vanilla Minecraft server (v1.21.8) with Docker and a custom domain. Future versions will include step-by-step instructions for plugins, other server sharing options, and further reccomendations.
-## Before You Begin
-Install Docker Desktop if you don’t already have it.
-Decide whether you’ll be running local only (LAN play) or public with a domain.
-You’ll need a domain name if you want friends to connect without using your IP directly. Services like Porkbun sell domains for as little as $1-10/year. (Personally my domain costs about $5/year)
-## Part 1: Base Server Setup
-1. Get the files
-     - Download the preferred version from [Releases](https://github.com/Someone8465/Minecraft-Docker/releases) and then extract the files to your preferred storage location.
-2. Accept the EULA
-     - Go to ./minecraft-docker/server/
-     - Open eula.txt
-     - Read the Minecraft End User License Agreement
-     - Change eula=false → eula=true
-3. Configure the server
-     - Open server.properties in ./minecraft-docker/server/
-     - Edit settings as desired.
-     - Note that by default, only the whitelist is enabled (recommended for private servers or in general if you dont have much knowledge on or dont want to mess with anticheats or other security measures).
-4. Choose the server version
-     - By default, the server uses vanilla 1.21.8.
-     - To change versions or use plugins (e.g., Paper), replace the server.jar in ./minecraft-docker/build/.
-5. Adjust memory usage (or other java arguments)
-     - [Find out how much RAM your server will need](www.craftmc.net/tools/minecraft-server-calculator)
-     - Open ./minecraft-docker/Dockerfile
-     - Look for the Java arguments: (Beginners should only adjust these two values)
-          - Xms2G → Minimum RAM (default 2 GB)
-          - Xmx8G → Maximum RAM (default 8 GB, which is super overkill for the vast majority of users)
-7. Start the server
-     - Open a terminal in the ./minecraft-docker/ folder
-     - Run: docker compose up
-8. Whitelist players
-     - Attach to the server to the terminal with: docker attach minecraft
-     - When the console is ready, add players: whitelist add <minecraft_username>
-9. Test locally
-     - Launch Minecraft (matching the server version)
-     - Add a server with the address: localhost
-## Part 2: Domain + Port Forwarding (Optional)
-Do this if you want others to connect without using your public IP directly:
-1. Find your public IP
-     - Visit whatsmyip.com or similar.
-2. Set up DNS
-     - In your domain registrar’s DNS settings, create an A record:
-     - Example: play.yourdomain.com
-     - Points to: your public IP
-     - Port: 25565 (default Minecraft port)
-3. Configure your firewall (Windows example)
-     - Open Windows Defender Firewall → Advanced Settings
-     - Create a new Inbound Rule to allow TCP port 25565.
-4. Port forward on your router
-     - Forward TCP 25565 to your server machine’s local IP.
-     - This step varies by router; check your router’s admin page.
-5. Test external access
-     - From another computer, connect in Minecraft using your domain: play.yourdomain.com
-     - Note that from the host machine, you’ll still connect with: localhost
+  <main>
+    <section>
+      <h2>Before You Begin</h2>
+      <ul>
+        <li>Install <a href="https://www.docker.com/products/docker-desktop/" target="_blank">Docker Desktop</a> if you don’t already have it.</li>
+        <li>Decide if your server will be <strong>local only</strong> or <strong>public with a domain</strong>.</li>
+        <li>A domain makes connecting easier. Providers like <strong>Porkbun</strong> sell domains for $1–10/year.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Part 1: Base Server Setup</h2>
+      <ol>
+        <li><strong>Get the files:</strong> Download the preferred version from <a href="https://github.com/Someone8465/Minecraft-Docker/releases">Releases</a> and then extract the files to your preferred storage location.</li>
+        <li><strong>Accept the EULA:</strong>
+          <ul>
+            <li>Navigate to <code>./minecraft-docker/server/</code></li>
+            <li>Open <code>eula.txt</code></li>
+            <li>Change <code>eula=false</code> → <code>eula=true</code></li>
+          </ul>
+        </li>
+        <li><strong>Configure the server:</strong> Edit <code>server.properties</code>. By default, whitelist is enabled (recommended).</li>
+        <li><strong>Choose server version:</strong> Replace <code>server.jar</code> in <code>./minecraft-docker/build/</code> to use another version (e.g., Paper).</li>
+        <li><strong>Adjust memory (optional):</strong>
+          <ul>
+            <li>Edit <code>./minecraft-docker/Dockerfile</code></li>
+            <li>Key arguments:
+              <ul>
+                <li><code>-Xms2G</code> → Minimum RAM</li>
+                <li><code>-Xmx8G</code> → Maximum RAM</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><strong>Start the server:</strong>
+          <pre><code>docker compose up</code></pre>
+        </li>
+        <li><strong>Whitelist players:</strong>
+          <pre><code>docker attach minecraft
+whitelist add &lt;minecraft_username&gt;</code></pre>
+        </li>
+        <li><strong>Test locally:</strong> Launch Minecraft and connect to <code>localhost</code>.</li>
+      </ol>
+    </section>
+    <section>
+      <h2>Part 2: Domain + Port Forwarding (Optional)</h2>
+      <ol>
+        <li><strong>Find your public IP:</strong> Visit <a href="https://whatsmyip.com" target="_blank">whatsmyip.com</a>.</li>
+        <li><strong>Set up DNS:</strong>
+          <ul>
+            <li>Create an <strong>A record</strong> (e.g., <code>play.yourdomain.com</code>)</li>
+            <li>Point it to your public IP</li>
+            <li>Use port <code>25565</code></li>
+          </ul>
+        </li>
+        <li><strong>Allow firewall traffic (Windows):</strong>
+          <ul>
+            <li>Open <em>Windows Defender Firewall</em></li>
+            <li>Create a new <em>Inbound Rule</em> for TCP port <code>25565</code></li>
+          </ul>
+        </li>
+        <li><strong>Port forward on your router:</strong> Forward TCP <code>25565</code> to your server’s local IP.</li>
+        <li><strong>Test external access:</strong>
+          <ul>
+            <li>Other computers connect with <code>play.yourdomain.com</code></li>
+            <li>Host machine connects with <code>localhost</code></li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+    <div class="note">
+      ✅ At this point, your server should be running and accessible both locally and (if configured) via your domain.
+    </div>
+  </main>
+  <footer>
+    <p>Minecraft Server Setup Guide · Powered by Docker</p>
+  </footer>
+</body>
+</html>
